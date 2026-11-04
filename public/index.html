@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fitness Buddy — Powered by IBM Granite</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🏋️</span>
+        <div>
+          <span class="logo-title">AI Fitness Buddy</span>
+          <span class="logo-sub">Powered by IBM Granite</span>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-section="chat">💬 Chat</button>
+        <button class="nav-btn" data-section="workout">🏃 Workout</button>
+        <button class="nav-btn" data-section="nutrition">🥗 Nutrition</button>
+        <button class="nav-btn" data-section="motivation">⚡ Motivation</button>
+        <button class="nav-btn" data-section="profile">👤 Profile</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── MAIN ────────────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- ── CHAT SECTION ──── -->
+    <section id="section-chat" class="section active">
+      <div class="section-header">
+        <h2>💬 Chat with FitBuddy</h2>
+        <p>Ask anything about fitness, nutrition, or wellness — FitBuddy remembers your conversation.</p>
+      </div>
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot-message">
+            <div class="message-avatar">🤖</div>
+            <div class="message-content">
+              <p>Hey there! I'm <strong>FitBuddy</strong>, your AI-powered fitness companion running on IBM Granite 🚀</p>
+              <p>I can help you with:</p>
+              <ul>
+                <li>🏋️ Personalised workout plans</li>
+                <li>🥗 Nutrition & meal planning</li>
+                <li>⚡ Motivation & wellness tips</li>
+                <li>❓ Any fitness question you have</li>
+              </ul>
+              <p>What's your fitness goal today?</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <div class="chat-input-row">
+            <button id="voiceBtn" class="voice-btn" title="Voice input">🎤</button>
+            <textarea id="chatInput" placeholder="Ask FitBuddy anything... (e.g. 'Create a 4-week beginner workout plan')" rows="1"></textarea>
+            <button id="sendBtn" class="send-btn">Send ➤</button>
+          </div>
+          <div id="voiceStatus" class="voice-status hidden">🔴 Recording... (click mic to stop)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── WORKOUT SECTION ──── -->
+    <section id="section-workout" class="section">
+      <div class="section-header">
+        <h2>🏃 Generate Workout Plan</h2>
+        <p>Get a personalised home workout plan tailored to your fitness level and goals.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Fitness Level</label>
+            <select id="wFitnessLevel">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Primary Goal</label>
+            <select id="wGoal">
+              <option value="weight loss">Weight Loss</option>
+              <option value="muscle gain">Muscle Gain</option>
+              <option value="endurance">Endurance / Cardio</option>
+              <option value="flexibility">Flexibility & Mobility</option>
+              <option value="general fitness">General Fitness</option>
+              <option value="stress relief">Stress Relief</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Time per Session (minutes)</label>
+            <input type="number" id="wTime" value="30" min="10" max="120" />
+          </div>
+          <div class="form-group">
+            <label>Days per Week</label>
+            <input type="number" id="wDays" value="4" min="1" max="7" />
+          </div>
+          <div class="form-group">
+            <label>Equipment Available</label>
+            <select id="wEquipment">
+              <option value="none (bodyweight only)">None (bodyweight only)</option>
+              <option value="resistance bands">Resistance Bands</option>
+              <option value="dumbbells">Dumbbells</option>
+              <option value="dumbbells and resistance bands">Dumbbells + Resistance Bands</option>
+              <option value="full home gym">Full Home Gym</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Focus Area</label>
+            <select id="wFocusArea">
+              <option value="full body">Full Body</option>
+              <option value="upper body">Upper Body</option>
+              <option value="lower body">Lower Body</option>
+              <option value="core">Core</option>
+              <option value="cardio">Cardio</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Age (optional)</label>
+            <input type="number" id="wAge" placeholder="e.g. 28" min="10" max="100" />
+          </div>
+          <div class="form-group">
+            <label>Physical Limitations</label>
+            <input type="text" id="wLimitations" placeholder="e.g. knee pain, back injury..." />
+          </div>
+        </div>
+        <button class="btn-primary btn-full" id="generateWorkoutBtn">🏋️ Generate My Workout Plan</button>
+      </div>
+      <div id="workoutResult" class="result-card hidden"></div>
+    </section>
+
+    <!-- ── NUTRITION SECTION ──── -->
+    <section id="section-nutrition" class="section">
+      <div class="section-header">
+        <h2>🥗 Nutrition Guidance</h2>
+        <p>Get balanced meal plans and healthy food recommendations tailored to your goals.</p>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="meal-plan">Meal Plan</button>
+        <button class="tab-btn" data-tab="food-analyze">Analyze Food</button>
+        <button class="tab-btn" data-tab="food-swap">Healthy Swaps</button>
+      </div>
+
+      <!-- Meal Plan Tab -->
+      <div id="tab-meal-plan" class="tab-content active form-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Health Goal</label>
+            <select id="nGoal">
+              <option value="weight loss">Weight Loss</option>
+              <option value="muscle gain">Muscle Gain</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="energy boost">Energy Boost</option>
+              <option value="general health">General Health</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Activity Level</label>
+            <select id="nActivity">
+              <option value="sedentary">Sedentary</option>
+              <option value="lightly active">Lightly Active</option>
+              <option value="moderate">Moderately Active</option>
+              <option value="very active">Very Active</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Dietary Restrictions</label>
+            <select id="nDiet">
+              <option value="none">None</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="gluten-free">Gluten-Free</option>
+              <option value="dairy-free">Dairy-Free</option>
+              <option value="keto">Keto</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Meals per Day</label>
+            <select id="nMeals">
+              <option value="3">3 meals</option>
+              <option value="4">3 meals + 1 snack</option>
+              <option value="5">3 meals + 2 snacks</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Food Allergies</label>
+            <input type="text" id="nAllergies" placeholder="e.g. nuts, dairy, shellfish..." />
+          </div>
+          <div class="form-group">
+            <label>Budget</label>
+            <select id="nBudget">
+              <option value="low">Low</option>
+              <option value="moderate">Moderate</option>
+              <option value="high">High (no limit)</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary btn-full" id="generateMealBtn">🥗 Generate My Meal Plan</button>
+      </div>
+
+      <!-- Analyze Food Tab -->
+      <div id="tab-food-analyze" class="tab-content form-card" style="display:none">
+        <div class="form-group">
+          <label>Food / Meal Description</label>
+          <textarea id="analyzeFood" rows="3" placeholder="e.g. 'grilled chicken breast with brown rice and broccoli' or 'a slice of pepperoni pizza'"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Your Fitness Goal</label>
+          <input type="text" id="analyzeFoodGoal" placeholder="e.g. weight loss, muscle gain..." />
+        </div>
+        <button class="btn-primary btn-full" id="analyzeFoodBtn">🔍 Analyze This Food</button>
+      </div>
+
+      <!-- Food Swap Tab -->
+      <div id="tab-food-swap" class="tab-content form-card" style="display:none">
+        <div class="form-group">
+          <label>Food to Replace</label>
+          <input type="text" id="swapFood" placeholder="e.g. white bread, soda, ice cream..." />
+        </div>
+        <div class="form-group">
+          <label>Your Goal</label>
+          <input type="text" id="swapGoal" placeholder="e.g. weight loss, more protein..." />
+        </div>
+        <div class="form-group">
+          <label>Dietary Restriction</label>
+          <input type="text" id="swapRestriction" placeholder="e.g. vegan, gluten-free..." />
+        </div>
+        <button class="btn-primary btn-full" id="swapFoodBtn">🔄 Find Healthy Swaps</button>
+      </div>
+
+      <div id="nutritionResult" class="result-card hidden"></div>
+    </section>
+
+    <!-- ── MOTIVATION SECTION ──── -->
+    <section id="section-motivation" class="section">
+      <div class="section-header">
+        <h2>⚡ Motivation & Wellness</h2>
+        <p>Daily inspiration, personalised motivation, and science-backed wellness tips.</p>
+      </div>
+
+      <div class="motivation-grid">
+        <!-- Daily Inspiration Card -->
+        <div class="motivation-card">
+          <h3>📅 Today's Inspiration</h3>
+          <p class="card-desc">Get your daily dose of fitness motivation for today.</p>
+          <button class="btn-primary" id="dailyInspirationBtn">✨ Get Today's Inspiration</button>
+          <div id="dailyInspirationResult" class="result-inline hidden"></div>
+        </div>
+
+        <!-- Personal Motivation Card -->
+        <div class="motivation-card">
+          <h3>💪 Personal Motivation</h3>
+          <div class="form-group">
+            <label>Current Streak (days)</label>
+            <input type="number" id="mStreak" value="0" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Your Goal</label>
+            <input type="text" id="mGoal" placeholder="e.g. lose 10kg, run 5K..." />
+          </div>
+          <div class="form-group">
+            <label>Current Mood</label>
+            <select id="mMood">
+              <option value="motivated">Motivated 🔥</option>
+              <option value="neutral">Neutral 😐</option>
+              <option value="tired">Tired 😴</option>
+              <option value="stressed">Stressed 😤</option>
+              <option value="unmotivated">Unmotivated 😔</option>
+            </select>
+          </div>
+          <button class="btn-primary btn-full" id="personalMotivationBtn">⚡ Motivate Me!</button>
+          <div id="personalMotivationResult" class="result-inline hidden"></div>
+        </div>
+      </div>
+
+      <!-- Wellness Tips -->
+      <div class="form-card" style="margin-top: 24px">
+        <h3>🌿 Wellness Tips</h3>
+        <p>Get expert tips on specific wellness areas.</p>
+        <div class="wellness-chips">
+          <button class="chip" data-area="hydration">💧 Hydration</button>
+          <button class="chip" data-area="sleep">😴 Sleep</button>
+          <button class="chip" data-area="recovery">🔄 Recovery</button>
+          <button class="chip" data-area="stress">🧘 Stress</button>
+          <button class="chip" data-area="posture">🪑 Posture</button>
+          <button class="chip" data-area="general">🌟 General</button>
+        </div>
+        <div id="wellnessTipResult" class="result-inline hidden"></div>
+      </div>
+    </section>
+
+    <!-- ── PROFILE SECTION ──── -->
+    <section id="section-profile" class="section">
+      <div class="section-header">
+        <h2>👤 Your Profile</h2>
+        <p>Set up your profile so FitBuddy can personalise all recommendations for you.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" id="pName" placeholder="Your name" />
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="pAge" placeholder="e.g. 28" min="10" max="100" />
+          </div>
+          <div class="form-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="pWeight" placeholder="e.g. 70" />
+          </div>
+          <div class="form-group">
+            <label>Height (cm)</label>
+            <input type="number" id="pHeight" placeholder="e.g. 175" />
+          </div>
+          <div class="form-group">
+            <label>Fitness Level</label>
+            <select id="pFitnessLevel">
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Primary Goal</label>
+            <select id="pGoal">
+              <option value="weight loss">Weight Loss</option>
+              <option value="muscle gain">Muscle Gain</option>
+              <option value="endurance">Endurance</option>
+              <option value="general fitness">General Fitness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Available Time/Day (min)</label>
+            <input type="number" id="pTime" value="30" min="10" max="120" />
+          </div>
+          <div class="form-group">
+            <label>Equipment</label>
+            <select id="pEquipment">
+              <option value="none (bodyweight only)">None</option>
+              <option value="resistance bands">Resistance Bands</option>
+              <option value="dumbbells">Dumbbells</option>
+              <option value="full home gym">Full Home Gym</option>
+            </select>
+          </div>
+          <div class="form-group span-2">
+            <label>Health Limitations / Injuries</label>
+            <input type="text" id="pLimitations" placeholder="e.g. knee pain, lower back issues..." />
+          </div>
+          <div class="form-group span-2">
+            <label>Dietary Restrictions</label>
+            <input type="text" id="pDiet" placeholder="e.g. vegetarian, gluten-free, no nuts..." />
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn-primary" id="saveProfileBtn">💾 Save Profile</button>
+          <button class="btn-secondary" id="clearProfileBtn">🗑️ Clear Profile</button>
+        </div>
+        <div id="profileSaveMsg" class="save-msg hidden">✅ Profile saved! FitBuddy will now personalise all responses for you.</div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── LOADING OVERLAY ──────────────────────────────────────── -->
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <p id="loadingText">FitBuddy is thinking...</p>
+      <small>Powered by IBM Granite</small>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

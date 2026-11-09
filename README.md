@@ -3,6 +3,17 @@
 **The Smartest AI Fitness Buddy** — A personalised fitness & wellness companion powered by **IBM Granite** (via IBM watsonx.ai) and **IBM Watson Speech-to-Text**.
 
 ---
+## 🌐 Live Demo
+
+**Try AI Fitness Buddy here:**
+
+[Open AI Fitness Buddy](https://ai-fitness-buddy.onrender.com/)
+
+The application is deployed on Render and uses IBM Granite through IBM watsonx.ai to provide AI-powered fitness guidance, personalised workout plans, nutrition recommendations, and motivational support.
+
+> Note: The free hosting service may take around a minute to respond if it has been inactive.
+
+---
 
 ## 🚀 Features
 
